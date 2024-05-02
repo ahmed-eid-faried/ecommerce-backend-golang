@@ -8,7 +8,7 @@ services:
     environment:
       port: 8888
       auth_secret: auth_secret
-      database_uri: postgres://postgres:1234@postgres:5432/postgres
+      database_uri: postgres://amadytech_user:UBp0KyiORwkldz92RWSNJ0Xaus6Xy86Q@dpg-cnlfl4vsc6pc73cdbbb0-a/amadytech
       redis_uri: redis:6379
       redis_db: 0
 
@@ -23,5 +23,5 @@ services:
     restart: always
     image: "postgres:latest"
     environment:
-      DATABASE_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      DATABASE_USER: amadytech_user
+      POSTGRES_PASSWORD: UBp0KyiORwkldz92RWSNJ0Xaus6Xy86Q
