@@ -3,8 +3,8 @@ http_port: 8888
 grpc_port: 8889
 auth_secret: ######
 # Internal Database URL with SSL/TLS encryption enabled
-database_uri: postgres://amadytech_user:UBp0KyiORwkldz92RWSNJ0Xaus6Xy86Q@dpg-cnlfl4vsc6pc73cdbbb0-a/amadytech?sslmode=require
+database_uri: postgres://username:password@host:5432/database
 # Redis URI
-redis_uri: redis://red-coq0ukljm4es73adavog:6379
+redis_uri: localhost:6379
 redis_password:
 redis_db: 0

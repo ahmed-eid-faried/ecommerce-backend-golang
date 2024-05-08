@@ -1,6 +1,6 @@
-FROM golang:1.20.5
+FROM golang
 
-MAINTAINER quangdp<quangdangfit@gmail.com>
+# MAINTAINER quangdp<quangdangfit@gmail.com>
 
 WORKDIR /app
 COPY . .
