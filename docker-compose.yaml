@@ -15,9 +15,13 @@ services:
     depends_on:
       - postgres
       - redis
+    volumes:
+      - shop-data:/app/data
 
   redis:
     image: "redis:alpine"
+    volumes:
+      - redis-data:/data
 
   postgres:
     restart: always
@@ -25,3 +29,11 @@ services:
     environment:
       DATABASE_USER: postgres
       POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  shop-data:
+  redis-data:
+  postgres-data:
