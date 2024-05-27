@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   goshop:
-    image: "github.com/quangdangfit/goshop"
+    image: "https://github.com/ahmed-eid-faried/ecommerce-backend-golang"
     build: .
     ports:
       - "8888:8888"
