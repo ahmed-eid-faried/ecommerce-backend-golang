@@ -2,7 +2,7 @@ package dto
 
 type Cart struct {
 	ID    string         `json:"id"`
-	User  *User          `json:"user"`
+	User  *CartUser      `json:"user"`
 	Lines []*CartLineReq `json:"lines"`
 }
 
