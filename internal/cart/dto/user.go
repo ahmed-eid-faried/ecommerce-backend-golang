@@ -1,6 +1,6 @@
 package dto
 
-type User struct {
+type CartUser struct {
 	ID    string `json:"id"`
 	Email string `json:"email"`
 }

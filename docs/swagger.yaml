@@ -1,10 +1,12 @@
-basePath: /api/v1
+basePath: /
 definitions:
   dto.ChangePasswordReq:
     properties:
       new_password:
+        description: كلمة المرور الجديدة مع التحقق من كلمة المرور المطلوبة
         type: string
       password:
+        description: كلمة المرور الحالية مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - new_password
@@ -43,8 +45,10 @@ definitions:
   dto.LoginReq:
     properties:
       email:
+        description: البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب
         type: string
       password:
+        description: كلمة المرور مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - email
@@ -53,11 +57,15 @@ definitions:
   dto.LoginRes:
     properties:
       access_token:
+        description: رمز الوصول
         type: string
       refresh_token:
+        description: رمز التحديث
         type: string
       user:
-        $ref: '#/definitions/dto.User'
+        allOf:
+        - $ref: '#/definitions/dto.User'
+        description: المستخدم الذي قام بتسجيل الدخول
     type: object
   dto.Order:
     properties:
@@ -109,8 +117,10 @@ definitions:
   dto.RegisterReq:
     properties:
       email:
+        description: البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب
         type: string
       password:
+        description: كلمة المرور مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - email
@@ -119,7 +129,9 @@ definitions:
   dto.RegisterRes:
     properties:
       user:
-        $ref: '#/definitions/dto.User'
+        allOf:
+        - $ref: '#/definitions/dto.User'
+        description: المستخدم المسجل
     type: object
   dto.UpdateProductReq:
     properties:
@@ -134,12 +146,16 @@ definitions:
   dto.User:
     properties:
       created_at:
+        description: وقت الإنشاء
         type: string
       email:
+        description: البريد الإلكتروني للمستخدم
         type: string
       id:
+        description: معرف المستخدم
         type: string
       updated_at:
+        description: وقت التحديث
         type: string
     type: object
   internal_order_dto.Product:
@@ -185,19 +201,14 @@ definitions:
       total_page:
         type: integer
     type: object
+host: localhost:8888
 info:
-  contact:
-    email: quangdangfit@gmail.com
-    name: Quang Dang
+  contact: {}
   description: Swagger API for GoShop.
-  license:
-    name: MIT
-    url: https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE
-  termsOfService: http://swagger.io/terms/
   title: GoShop Swagger API
   version: "1.0"
 paths:
-  /api/v1/auth/change-password:
+  /auth/change-password:
     put:
       parameters:
       - description: Body
@@ -214,7 +225,7 @@ paths:
       summary: changes the password
       tags:
       - users
-  /api/v1/auth/login:
+  /auth/login:
     post:
       parameters:
       - description: Body
@@ -233,7 +244,7 @@ paths:
       summary: Login
       tags:
       - users
-  /api/v1/auth/me:
+  /auth/me:
     get:
       produces:
       - application/json
@@ -247,7 +258,7 @@ paths:
       summary: get my profile
       tags:
       - users
-  /api/v1/auth/register:
+  /auth/register:
     post:
       parameters:
       - description: Body
@@ -266,7 +277,7 @@ paths:
       summary: Register new user
       tags:
       - users
-  /api/v1/orders:
+  /orders:
     get:
       parameters:
       - in: query
@@ -307,7 +318,7 @@ paths:
       summary: place order
       tags:
       - orders
-  /api/v1/orders/{id}:
+  /orders/{id}:
     get:
       parameters:
       - description: Order ID
@@ -327,7 +338,7 @@ paths:
       summary: get order details
       tags:
       - orders
-  /api/v1/orders/{id}/cancel:
+  /orders/{id}/cancel:
     put:
       parameters:
       - description: Order ID
@@ -343,7 +354,7 @@ paths:
       summary: cancel order
       tags:
       - orders
-  /api/v1/products:
+  /products:
     get:
       produces:
       - application/json
@@ -371,7 +382,7 @@ paths:
       summary: create product
       tags:
       - products
-  /api/v1/products/{id}:
+  /products/{id}:
     get:
       parameters:
       - description: Product ID

@@ -48,7 +48,7 @@ func TestOrderAPI_PlaceOrderSuccess(t *testing.T) {
 			},
 		},
 	}
-	writer := makeRequest("POST", "/api/v1/orders", req, accessToken())
+	writer := makeRequest("POST", "/orders", req, accessToken())
 	var res dto.Order
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -93,7 +93,7 @@ func TestOrderAPI_PlaceOrderInvalidFieldType(t *testing.T) {
 			},
 		},
 	}
-	writer := makeRequest("POST", "/api/v1/orders", req, accessToken())
+	writer := makeRequest("POST", "/orders", req, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusBadRequest, writer.Code)
@@ -128,7 +128,7 @@ func TestOrderAPI_PlaceOrderInvalidMissProductID(t *testing.T) {
 			},
 		},
 	}
-	writer := makeRequest("POST", "/api/v1/orders", req, accessToken())
+	writer := makeRequest("POST", "/orders", req, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -163,7 +163,7 @@ func TestOrderAPI_PlaceOrderInvalidMissQuantity(t *testing.T) {
 			},
 		},
 	}
-	writer := makeRequest("POST", "/api/v1/orders", req, accessToken())
+	writer := makeRequest("POST", "/orders", req, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -199,7 +199,7 @@ func TestOrderAPI_PlaceOrderInvalidProductNotFound(t *testing.T) {
 			},
 		},
 	}
-	writer := makeRequest("POST", "/api/v1/orders", req, accessToken())
+	writer := makeRequest("POST", "/orders", req, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -236,7 +236,7 @@ func TestOrderAPI_PlaceOrderUnauthorized(t *testing.T) {
 		},
 	}
 
-	writer := makeRequest("POST", "/api/v1/orders", req, "")
+	writer := makeRequest("POST", "/orders", req, "")
 	assert.Equal(t, http.StatusUnauthorized, writer.Code)
 }
 
@@ -281,7 +281,7 @@ func TestOrderAPI_GetOrderByIDSuccess(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o)
 
-	writer := makeRequest("GET", fmt.Sprintf("/api/v1/orders/%s", o.ID), nil, token)
+	writer := makeRequest("GET", fmt.Sprintf("/orders/%s", o.ID), nil, token)
 	var res dto.Order
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -295,7 +295,7 @@ func TestOrderAPI_GetOrderByIDSuccess(t *testing.T) {
 }
 
 func TestOrderAPI_GetOrderByIDNotFound(t *testing.T) {
-	writer := makeRequest("GET", "/api/v1/orders/notfound", nil, accessToken())
+	writer := makeRequest("GET", "/orders/notfound", nil, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusNotFound, writer.Code)
@@ -343,12 +343,12 @@ func TestOrderAPI_CancelOrderSuccess(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o)
 
-	writer := makeRequest("PUT", fmt.Sprintf("/api/v1/orders/%s/cancel", o.ID), nil, token)
+	writer := makeRequest("PUT", fmt.Sprintf("/orders/%s/cancel", o.ID), nil, token)
 	assert.Equal(t, http.StatusOK, writer.Code)
 }
 
 func TestOrderAPI_CancelOrderNotFound(t *testing.T) {
-	writer := makeRequest("PUT", "/api/v1/orders/notfound/cancel", nil, accessToken())
+	writer := makeRequest("PUT", "/orders/notfound/cancel", nil, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -394,7 +394,7 @@ func TestOrderAPI_CancelOrderStatusDone(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o)
 
-	writer := makeRequest("PUT", fmt.Sprintf("/api/v1/orders/%s/cancel", o.ID), nil, token)
+	writer := makeRequest("PUT", fmt.Sprintf("/orders/%s/cancel", o.ID), nil, token)
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -440,7 +440,7 @@ func TestOrderAPI_CancelOrderStatusCancelled(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o)
 
-	writer := makeRequest("PUT", fmt.Sprintf("/api/v1/orders/%s/cancel", o.ID), nil, token)
+	writer := makeRequest("PUT", fmt.Sprintf("/orders/%s/cancel", o.ID), nil, token)
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -485,7 +485,7 @@ func TestOrderAPI_CancelOrderNotMine(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o)
 
-	writer := makeRequest("PUT", fmt.Sprintf("/api/v1/orders/%s/cancel", o.ID), nil, accessToken())
+	writer := makeRequest("PUT", fmt.Sprintf("/orders/%s/cancel", o.ID), nil, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusInternalServerError, writer.Code)
@@ -542,7 +542,7 @@ func TestOrderAPI_ListOrdersSuccess(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders", nil, token)
+	writer := makeRequest("GET", "/orders", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -561,7 +561,7 @@ func TestOrderAPI_ListOrdersSuccess(t *testing.T) {
 func TestOrderAPI_ListOrdersNotFound(t *testing.T) {
 	defer cleanData()
 
-	writer := makeRequest("GET", "/api/v1/orders", nil, accessToken())
+	writer := makeRequest("GET", "/orders", nil, accessToken())
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -569,7 +569,7 @@ func TestOrderAPI_ListOrdersNotFound(t *testing.T) {
 }
 
 func TestOrderAPI_ListOrdersInvalidFieldType(t *testing.T) {
-	writer := makeRequest("GET", "/api/v1/orders?page=a", nil, accessToken())
+	writer := makeRequest("GET", "/orders?page=a", nil, accessToken())
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	assert.Equal(t, http.StatusBadRequest, writer.Code)
@@ -623,7 +623,7 @@ func TestOrderAPI_ListMyOrdersFindByStatusSuccess(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?status=new", nil, token)
+	writer := makeRequest("GET", "/orders?status=new", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -683,7 +683,7 @@ func TestOrderAPI_ListOrdersFindByStatusNotFound(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?status=cancelled", nil, token)
+	writer := makeRequest("GET", "/orders?status=cancelled", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -737,7 +737,7 @@ func TestOrderAPI_ListOrdersFindByCodeSuccess(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", fmt.Sprintf("/api/v1/orders?code=%s", o1.Code), nil, token)
+	writer := makeRequest("GET", fmt.Sprintf("/orders?code=%s", o1.Code), nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -797,7 +797,7 @@ func TestOrderAPI_ListOrdersFindByCodeNotFound(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?code=notfound", nil, token)
+	writer := makeRequest("GET", "/orders?code=notfound", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -851,7 +851,7 @@ func TestOrderAPI_ListOrdersWithPagination(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?page=2&limit=1", nil, token)
+	writer := makeRequest("GET", "/orders?page=2&limit=1", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -911,7 +911,7 @@ func TestOrderAPI_ListOrdersWithOrder(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?order_by=created_at&order_desc=true", nil, token)
+	writer := makeRequest("GET", "/orders?order_by=created_at&order_desc=true", nil, token)
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)
@@ -973,7 +973,7 @@ func TestOrderAPI_GetMyOrdersNotMine(t *testing.T) {
 	}
 	dbTest.Create(context.Background(), &o2)
 
-	writer := makeRequest("GET", "/api/v1/orders?code=notfound", nil, accessToken())
+	writer := makeRequest("GET", "/orders?code=notfound", nil, accessToken())
 	var res dto.ListOrderRes
 	parseResponseResult(writer.Body.Bytes(), &res)
 	assert.Equal(t, http.StatusOK, writer.Code)

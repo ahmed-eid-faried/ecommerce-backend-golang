@@ -3,20 +3,13 @@
     "info": {
         "description": "Swagger API for GoShop.",
         "title": "GoShop Swagger API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "Quang Dang",
-            "email": "quangdangfit@gmail.com"
-        },
-        "license": {
-            "name": "MIT",
-            "url": "https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE"
-        },
+        "contact": {},
         "version": "1.0"
     },
-    "basePath": "/api/v1",
+    "host": "localhost:8888",
+    "basePath": "/",
     "paths": {
-        "/api/v1/auth/change-password": {
+        "/auth/change-password": {
             "put": {
                 "security": [
                     {
@@ -44,7 +37,7 @@
                 "responses": {}
             }
         },
-        "/api/v1/auth/login": {
+        "/auth/login": {
             "post": {
                 "produces": [
                     "application/json"
@@ -74,7 +67,7 @@
                 }
             }
         },
-        "/api/v1/auth/me": {
+        "/auth/me": {
             "get": {
                 "security": [
                     {
@@ -98,7 +91,7 @@
                 }
             }
         },
-        "/api/v1/auth/register": {
+        "/auth/register": {
             "post": {
                 "produces": [
                     "application/json"
@@ -128,7 +121,7 @@
                 }
             }
         },
-        "/api/v1/orders": {
+        "/orders": {
             "get": {
                 "security": [
                     {
@@ -197,7 +190,7 @@
                 }
             }
         },
-        "/api/v1/orders/{id}": {
+        "/orders/{id}": {
             "get": {
                 "security": [
                     {
@@ -230,7 +223,7 @@
                 }
             }
         },
-        "/api/v1/orders/{id}/cancel": {
+        "/orders/{id}/cancel": {
             "put": {
                 "security": [
                     {
@@ -256,7 +249,7 @@
                 "responses": {}
             }
         },
-        "/api/v1/products": {
+        "/products": {
             "get": {
                 "produces": [
                     "application/json"
@@ -301,7 +294,7 @@
                 "responses": {}
             }
         },
-        "/api/v1/products/{id}": {
+        "/products/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -365,9 +358,11 @@
             ],
             "properties": {
                 "new_password": {
+                    "description": "كلمة المرور الجديدة مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 },
                 "password": {
+                    "description": "كلمة المرور الحالية مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -426,9 +421,11 @@
             ],
             "properties": {
                 "email": {
+                    "description": "البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب",
                     "type": "string"
                 },
                 "password": {
+                    "description": "كلمة المرور مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -437,13 +434,20 @@
             "type": "object",
             "properties": {
                 "access_token": {
+                    "description": "رمز الوصول",
                     "type": "string"
                 },
                 "refresh_token": {
+                    "description": "رمز التحديث",
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/dto.User"
+                    "description": "المستخدم الذي قام بتسجيل الدخول",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    ]
                 }
             }
         },
@@ -526,9 +530,11 @@
             ],
             "properties": {
                 "email": {
+                    "description": "البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب",
                     "type": "string"
                 },
                 "password": {
+                    "description": "كلمة المرور مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -537,7 +543,12 @@
             "type": "object",
             "properties": {
                 "user": {
-                    "$ref": "#/definitions/dto.User"
+                    "description": "المستخدم المسجل",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dto.User"
+                        }
+                    ]
                 }
             }
         },
@@ -560,15 +571,19 @@
             "type": "object",
             "properties": {
                 "created_at": {
+                    "description": "وقت الإنشاء",
                     "type": "string"
                 },
                 "email": {
+                    "description": "البريد الإلكتروني للمستخدم",
                     "type": "string"
                 },
                 "id": {
+                    "description": "معرف المستخدم",
                     "type": "string"
                 },
                 "updated_at": {
+                    "description": "وقت التحديث",
                     "type": "string"
                 }
             }

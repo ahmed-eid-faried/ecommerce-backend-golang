@@ -93,7 +93,7 @@ func accessToken() string {
 		Password: "test123456",
 	}
 
-	writer := makeRequest("POST", "/api/v1/auth/login", user, "")
+	writer := makeRequest("POST", "/auth/login", user, "")
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	return response["result"]["access_token"]
@@ -105,7 +105,7 @@ func refreshToken() string {
 		Password: "test123456",
 	}
 
-	writer := makeRequest("POST", "/api/v1/auth/login", user, "")
+	writer := makeRequest("POST", "/auth/login", user, "")
 	var response map[string]map[string]string
 	_ = json.Unmarshal(writer.Body.Bytes(), &response)
 	return response["result"]["refresh_token"]

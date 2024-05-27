@@ -21,14 +21,16 @@ import (
 	"goshop/pkg/response"
 )
 
+// Server represents the HTTP server
 type Server struct {
-	engine    *gin.Engine
-	cfg       *config.Schema
-	validator validation.Validation
-	db        dbs.IDatabase
-	cache     redis.IRedis
+	engine    *gin.Engine           // The underlying Gin engine
+	cfg       *config.Schema        // The configuration for the server
+	validator validation.Validation // The validator for request data
+	db        dbs.IDatabase         // The database instance
+	cache     redis.IRedis          // The Redis instance
 }
 
+// NewServer creates a new HTTP server with the provided dependencies
 func NewServer(validator validation.Validation, db dbs.IDatabase, cache redis.IRedis) *Server {
 	return &Server{
 		engine:    gin.Default(),
@@ -39,22 +41,29 @@ func NewServer(validator validation.Validation, db dbs.IDatabase, cache redis.IR
 	}
 }
 
+// Run starts the HTTP server
 func (s Server) Run() error {
+
+	// Set the trusted proxies for the server
 	_ = s.engine.SetTrustedProxies(nil)
+
+	// Set the mode for the server based on the environment
 	if s.cfg.Environment == config.ProductionEnv {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
+	// Map the routes for the server
 	if err := s.MapRoutes(); err != nil {
 		log.Fatalf("MapRoutes Error: %v", err)
 	}
-	s.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	// Define the health check endpoint
 	s.engine.GET("/health", func(c *gin.Context) {
 		response.JSON(c, http.StatusOK, nil)
 		return
 	})
 
-	// Start http server
+	// Start the HTTP server
 	logger.Info("HTTP server is listening on PORT: ", s.cfg.HttpPort)
 	if err := s.engine.Run(fmt.Sprintf(":%d", s.cfg.HttpPort)); err != nil {
 		log.Fatalf("Running HTTP server: %v", err)
@@ -63,11 +72,18 @@ func (s Server) Run() error {
 	return nil
 }
 
+// GetEngine returns the underlying Gin engine
 func (s Server) GetEngine() *gin.Engine {
 	return s.engine
 }
 
+// MapRoutes maps the routes for the server
 func (s Server) MapRoutes() error {
+	// Define the routes for the server
+	s.engine.GET("/", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	s.engine.NoRoute(func(c *gin.Context) {
+		c.File("./templates/404.html")
+	})
 	v1 := s.engine.Group("/api/v1")
 	userHttp.Routes(v1, s.db, s.validator)
 	productHttp.Routes(v1, s.db, s.validator, s.cache)
