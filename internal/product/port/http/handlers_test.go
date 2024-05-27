@@ -56,7 +56,7 @@ func (suite *ProductHandlerTestSuite) prepareContext(path string, body any) (*gi
 // =================================================================================================
 
 func (suite *ProductHandlerTestSuite) TestGetProductByIDSuccessfullyFromDatabase() {
-	ctx, writer := suite.prepareContext("/products/123456", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.Product{}).Return(errors.New("not found")).Times(1)
 	suite.mockService.On("GetProductByID", mock.Anything, mock.Anything).
@@ -84,7 +84,7 @@ func (suite *ProductHandlerTestSuite) TestGetProductByIDSuccessfullyFromDatabase
 }
 
 func (suite *ProductHandlerTestSuite) TestGetProductByIDSuccessfullyFromCache() {
-	ctx, writer := suite.prepareContext("/products/123456", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.Product{}).Return(nil).Times(1)
 
@@ -102,7 +102,7 @@ func (suite *ProductHandlerTestSuite) TestGetProductByIDSuccessfullyFromCache() 
 }
 
 func (suite *ProductHandlerTestSuite) TestGetProductByIDFail() {
-	ctx, writer := suite.prepareContext("/products/123456", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.Product{}).Return(errors.New("not found")).Times(1)
 	suite.mockService.On("GetProductByID", mock.Anything, mock.Anything).
@@ -116,7 +116,7 @@ func (suite *ProductHandlerTestSuite) TestGetProductByIDFail() {
 // =================================================================================================
 
 func (suite *ProductHandlerTestSuite) TestListProductsSuccessfullyFromDatabase() {
-	ctx, writer := suite.prepareContext("/products", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.ListProductRes{}).Return(errors.New("not found")).Times(1)
 	suite.mockService.On("ListProducts", mock.Anything, mock.Anything).
@@ -148,7 +148,7 @@ func (suite *ProductHandlerTestSuite) TestListProductsSuccessfullyFromDatabase()
 }
 
 func (suite *ProductHandlerTestSuite) TestListProductsSuccessfullyFromCache() {
-	ctx, writer := suite.prepareContext("/products", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.ListProductRes{}).Return(nil).Times(1)
 
@@ -164,13 +164,13 @@ func (suite *ProductHandlerTestSuite) TestListProductsSuccessfullyFromCache() {
 }
 
 func (suite *ProductHandlerTestSuite) TestListProductsInvalidQuery() {
-	ctx, writer := suite.prepareContext("/products?page=a", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products?page=a", nil)
 	suite.handler.ListProducts(ctx)
 	suite.Equal(http.StatusBadRequest, writer.Code)
 }
 
 func (suite *ProductHandlerTestSuite) TestListProductsFail() {
-	ctx, writer := suite.prepareContext("/products", nil)
+	ctx, writer := suite.prepareContext("/api/v1/products", nil)
 
 	suite.mockRedis.On("Get", mock.Anything, &dto.ListProductRes{}).Return(errors.New("not found")).Times(1)
 	suite.mockService.On("ListProducts", mock.Anything, mock.Anything).
@@ -189,7 +189,7 @@ func (suite *ProductHandlerTestSuite) TestCreateProductSuccess() {
 		Price:       10.5,
 	}
 
-	ctx, writer := suite.prepareContext("/products", req)
+	ctx, writer := suite.prepareContext("/api/v1/products", req)
 
 	suite.mockService.On("Create", mock.Anything, req).
 		Return(
@@ -222,7 +222,7 @@ func (suite *ProductHandlerTestSuite) TestCreateProductInvalidPriceType() {
 		"price":       "10.5",
 	}
 
-	ctx, writer := suite.prepareContext("/products", req)
+	ctx, writer := suite.prepareContext("/api/v1/products", req)
 	suite.handler.CreateProduct(ctx)
 
 	var res map[string]map[string]string
@@ -238,7 +238,7 @@ func (suite *ProductHandlerTestSuite) TestCreateProductFail() {
 		Price:       10.5,
 	}
 
-	ctx, writer := suite.prepareContext("/products", req)
+	ctx, writer := suite.prepareContext("/api/v1/products", req)
 
 	suite.mockService.On("Create", mock.Anything, req).
 		Return(nil, errors.New("error")).Times(1)
@@ -261,7 +261,7 @@ func (suite *ProductHandlerTestSuite) TestUpdateProductSuccess() {
 		Price:       10.5,
 	}
 
-	ctx, writer := suite.prepareContext("/products/123456", req)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", req)
 
 	suite.mockService.On("Update", mock.Anything, mock.Anything, req).
 		Return(
@@ -296,7 +296,7 @@ func (suite *ProductHandlerTestSuite) TestUpdateProductInvalidPriceType() {
 		"price":       "10.5",
 	}
 
-	ctx, writer := suite.prepareContext("/products/123456", req)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", req)
 	suite.handler.UpdateProduct(ctx)
 
 	var res map[string]map[string]string
@@ -312,7 +312,7 @@ func (suite *ProductHandlerTestSuite) TestUpdateProductFail() {
 		Price:       10.5,
 	}
 
-	ctx, writer := suite.prepareContext("/products/123456", req)
+	ctx, writer := suite.prepareContext("/api/v1/products/123456", req)
 
 	suite.mockService.On("Update", mock.Anything, mock.Anything, req).
 		Return(nil, errors.New("error")).Times(1)

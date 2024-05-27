@@ -35,7 +35,7 @@ func NewProductHandler(
 //	@Tags		products
 //	@Produce	json
 //	@Param		id	path	string	true	"Product ID"
-//	@Router		/products/{id} [get]
+//	@Router		/api/v1/products/{id} [get]
 func (p *ProductHandler) GetProductByID(c *gin.Context) {
 	var res dto.Product
 	cacheKey := c.Request.URL.RequestURI()
@@ -64,7 +64,7 @@ func (p *ProductHandler) GetProductByID(c *gin.Context) {
 //	@Tags		products
 //	@Produce	json
 //	@Success	200	{object}	dto.ListProductRes
-//	@Router		/products [get]
+//	@Router		/api/v1/products [get]
 func (p *ProductHandler) ListProducts(c *gin.Context) {
 	var req dto.ListProductReq
 	if err := c.ShouldBindQuery(&req); err != nil {
@@ -101,7 +101,7 @@ func (p *ProductHandler) ListProducts(c *gin.Context) {
 //	@Produce	json
 //	@Security	ApiKeyAuth
 //	@Param		_	body	dto.CreateProductReq	true	"Body"
-//	@Router		/products [post]
+//	@Router		/api/v1/products [post]
 func (p *ProductHandler) CreateProduct(c *gin.Context) {
 	var req dto.CreateProductReq
 	if err := c.ShouldBindJSON(&req); c.Request.Body == nil || err != nil {
@@ -131,7 +131,7 @@ func (p *ProductHandler) CreateProduct(c *gin.Context) {
 //	@Security	ApiKeyAuth
 //	@Param		id	path	string					true	"Product ID"
 //	@Param		_	body	dto.UpdateProductReq	true	"Body"
-//	@Router		/products/{id} [put]
+//	@Router		/api/v1/products/{id} [put]
 func (p *ProductHandler) UpdateProduct(c *gin.Context) {
 	productId := c.Param("id")
 	var req dto.UpdateProductReq
