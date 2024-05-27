@@ -9,7 +9,15 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Quang Dang",
+            "email": "quangdangfit@gmail.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -364,11 +372,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "new_password": {
-                    "description": "كلمة المرور الجديدة مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 },
                 "password": {
-                    "description": "كلمة المرور الحالية مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -427,11 +433,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "description": "البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب",
                     "type": "string"
                 },
                 "password": {
-                    "description": "كلمة المرور مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -440,20 +444,13 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "access_token": {
-                    "description": "رمز الوصول",
                     "type": "string"
                 },
                 "refresh_token": {
-                    "description": "رمز التحديث",
                     "type": "string"
                 },
                 "user": {
-                    "description": "المستخدم الذي قام بتسجيل الدخول",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/dto.User"
-                        }
-                    ]
+                    "$ref": "#/definitions/dto.User"
                 }
             }
         },
@@ -536,11 +533,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "email": {
-                    "description": "البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب",
                     "type": "string"
                 },
                 "password": {
-                    "description": "كلمة المرور مع التحقق من كلمة المرور المطلوبة",
                     "type": "string"
                 }
             }
@@ -549,12 +544,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "user": {
-                    "description": "المستخدم المسجل",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/dto.User"
-                        }
-                    ]
+                    "$ref": "#/definitions/dto.User"
                 }
             }
         },
@@ -577,19 +567,15 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "description": "وقت الإنشاء",
                     "type": "string"
                 },
                 "email": {
-                    "description": "البريد الإلكتروني للمستخدم",
                     "type": "string"
                 },
                 "id": {
-                    "description": "معرف المستخدم",
                     "type": "string"
                 },
                 "updated_at": {
-                    "description": "وقت التحديث",
                     "type": "string"
                 }
             }
@@ -673,8 +659,8 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8888",
-	BasePath:         "/",
+	Host:             "",
+	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "GoShop Swagger API",
 	Description:      "Swagger API for GoShop.",

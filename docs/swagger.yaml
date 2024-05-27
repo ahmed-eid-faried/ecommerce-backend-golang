@@ -1,12 +1,10 @@
-basePath: /
+basePath: /api/v1
 definitions:
   dto.ChangePasswordReq:
     properties:
       new_password:
-        description: كلمة المرور الجديدة مع التحقق من كلمة المرور المطلوبة
         type: string
       password:
-        description: كلمة المرور الحالية مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - new_password
@@ -45,10 +43,8 @@ definitions:
   dto.LoginReq:
     properties:
       email:
-        description: البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب
         type: string
       password:
-        description: كلمة المرور مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - email
@@ -57,15 +53,11 @@ definitions:
   dto.LoginRes:
     properties:
       access_token:
-        description: رمز الوصول
         type: string
       refresh_token:
-        description: رمز التحديث
         type: string
       user:
-        allOf:
-        - $ref: '#/definitions/dto.User'
-        description: المستخدم الذي قام بتسجيل الدخول
+        $ref: '#/definitions/dto.User'
     type: object
   dto.Order:
     properties:
@@ -117,10 +109,8 @@ definitions:
   dto.RegisterReq:
     properties:
       email:
-        description: البريد الإلكتروني مع التحقق من البريد الإلكتروني المطلوب
         type: string
       password:
-        description: كلمة المرور مع التحقق من كلمة المرور المطلوبة
         type: string
     required:
     - email
@@ -129,9 +119,7 @@ definitions:
   dto.RegisterRes:
     properties:
       user:
-        allOf:
-        - $ref: '#/definitions/dto.User'
-        description: المستخدم المسجل
+        $ref: '#/definitions/dto.User'
     type: object
   dto.UpdateProductReq:
     properties:
@@ -146,16 +134,12 @@ definitions:
   dto.User:
     properties:
       created_at:
-        description: وقت الإنشاء
         type: string
       email:
-        description: البريد الإلكتروني للمستخدم
         type: string
       id:
-        description: معرف المستخدم
         type: string
       updated_at:
-        description: وقت التحديث
         type: string
     type: object
   internal_order_dto.Product:
@@ -201,10 +185,15 @@ definitions:
       total_page:
         type: integer
     type: object
-host: localhost:8888
 info:
-  contact: {}
+  contact:
+    email: quangdangfit@gmail.com
+    name: Quang Dang
   description: Swagger API for GoShop.
+  license:
+    name: MIT
+    url: https://github.com/MartinHeinz/go-project-blueprint/blob/master/LICENSE
+  termsOfService: http://swagger.io/terms/
   title: GoShop Swagger API
   version: "1.0"
 paths:
