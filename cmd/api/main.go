@@ -29,8 +29,7 @@ import (
 //	@in							header
 //	@name						Authorization
 
-//	@BasePath	/api/v1
-
+// @BasePath	/api/v1
 func main() {
 	cfg := config.LoadConfig()
 	logger.Initialize(cfg.Environment)

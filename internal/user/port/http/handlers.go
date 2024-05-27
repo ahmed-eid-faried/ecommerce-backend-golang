@@ -30,7 +30,7 @@ func NewUserHandler(service service.IUserService) *UserHandler {
 //	@Produce	json
 //	@Param		_	body		dto.LoginReq	true	"Body"
 //	@Success	200	{object}	dto.LoginRes
-//	@Router		/api/v1/auth/login [post]
+//	@Router		/auth/login [post]
 func (h *UserHandler) Login(c *gin.Context) {
 	var req dto.LoginReq
 	if err := c.ShouldBindJSON(&req); c.Request.Body == nil || err != nil {
@@ -60,7 +60,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 //	@Produce	json
 //	@Param		_	body		dto.RegisterReq	true	"Body"
 //	@Success	200	{object}	dto.RegisterRes
-//	@Router		/api/v1/auth/register [post]
+//	@Router		/auth/register [post]
 func (h *UserHandler) Register(c *gin.Context) {
 	var req dto.RegisterReq
 	if err := c.ShouldBindJSON(&req); c.Request.Body == nil || err != nil {
@@ -88,7 +88,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 //	@Security	ApiKeyAuth
 //	@Produce	json
 //	@Success	200	{object}	dto.User
-//	@Router		/api/v1/auth/me [get]
+//	@Router		/auth/me [get]
 func (h *UserHandler) GetMe(c *gin.Context) {
 	userID := c.GetString("userId")
 	if userID == "" {
@@ -135,7 +135,7 @@ func (h *UserHandler) RefreshToken(c *gin.Context) {
 //	@Security	ApiKeyAuth
 //	@Produce	json
 //	@Param		_	body	dto.ChangePasswordReq	true	"Body"
-//	@Router		/api/v1/auth/change-password [put]
+//	@Router		/auth/change-password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	var req dto.ChangePasswordReq
 	if err := c.ShouldBindJSON(&req); c.Request.Body == nil || err != nil {

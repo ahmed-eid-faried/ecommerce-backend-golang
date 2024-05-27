@@ -31,7 +31,7 @@ func NewOrderHandler(service service.IOrderService) *OrderHandler {
 //	@Security	ApiKeyAuth
 //	@Param		_	body		dto.PlaceOrderReq	true	"Body"
 //	@Success	200	{object}	dto.Order
-//	@Router		/api/v1/orders [post]
+//	@Router		/orders [post]
 func (a *OrderHandler) PlaceOrder(c *gin.Context) {
 	var req dto.PlaceOrderReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -66,7 +66,7 @@ func (a *OrderHandler) PlaceOrder(c *gin.Context) {
 //	@Security	ApiKeyAuth
 //	@Param		_	query		dto.ListOrderReq	true	"Query"
 //	@Success	200	{object}	dto.ListOrderRes
-//	@Router		/api/v1/orders [get]
+//	@Router		/orders [get]
 func (a *OrderHandler) GetOrders(c *gin.Context) {
 	var req dto.ListOrderReq
 	if err := c.ShouldBindQuery(&req); err != nil {
@@ -102,7 +102,7 @@ func (a *OrderHandler) GetOrders(c *gin.Context) {
 //	@Security	ApiKeyAuth
 //	@Param		id	path		string	true	"Order ID"
 //	@Success	200	{object}	dto.Order
-//	@Router		/api/v1/orders/{id} [get]
+//	@Router		/orders/{id} [get]
 func (a *OrderHandler) GetOrderByID(c *gin.Context) {
 	userId := c.GetString("userId")
 	if userId == "" {
@@ -135,7 +135,7 @@ func (a *OrderHandler) GetOrderByID(c *gin.Context) {
 //	@Produce	json
 //	@Security	ApiKeyAuth
 //	@Param		id	path	string	true	"Order ID"
-//	@Router		/api/v1/orders/{id}/cancel [put]
+//	@Router		/orders/{id}/cancel [put]
 func (a *OrderHandler) CancelOrder(c *gin.Context) {
 	userID := c.GetString("userId")
 	if userID == "" {
