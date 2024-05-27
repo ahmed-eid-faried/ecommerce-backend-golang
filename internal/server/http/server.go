@@ -8,8 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/quangdangfit/gocommon/logger"
 	"github.com/quangdangfit/gocommon/validation"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+
+	// swaggerFiles "github.com/swaggo/files"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 
 	_ "goshop/docs"
 	orderHttp "goshop/internal/order/port/http"
@@ -80,10 +81,10 @@ func (s Server) GetEngine() *gin.Engine {
 // MapRoutes maps the routes for the server
 func (s Server) MapRoutes() error {
 	// Define the routes for the server
-	s.engine.GET("/", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	s.engine.NoRoute(func(c *gin.Context) {
-		c.File("./templates/404.html")
-	})
+	// s.engine.GET("/", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// s.engine.NoRoute(func(c *gin.Context) {
+	// 	c.File("./templates/404.html")
+	// })
 	v1 := s.engine.Group("/api/v1")
 	userHttp.Routes(v1, s.db, s.validator)
 	productHttp.Routes(v1, s.db, s.validator, s.cache)
