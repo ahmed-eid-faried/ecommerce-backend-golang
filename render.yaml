@@ -12,7 +12,7 @@ services:
         value: auth_secret
       - key: DATABASE_URI
         fromDatabase:
-          name: postgres
+          name: mypostgres
           property: connectionString
       - key: REDIS_URI
         fromService:
@@ -30,12 +30,53 @@ services:
         description: "Allow all IPs"
 
 databases:
-  - name: postgres
-    databaseName: postgres
-    user: postgres
+  - name: mypostgres
+    databaseName: mydatabase
+    user: myuser
     plan: standard
     region: oregon
     postgresMajorVersion: "16"
     ipAllowList:
       - source: 0.0.0.0/0
         description: "Allow all IPs"
+# services:
+#   - type: web
+#     name: goshop
+#     runtime: docker
+#     repo: https://github.com/ahmed-eid-faried/ecommerce-backend-golang
+#     branch: main
+#     dockerfilePath: ./Dockerfile
+#     envVars:
+#       - key: PORT
+#         value: "8888"
+#       - key: AUTH_SECRET
+#         value: auth_secret
+#       - key: DATABASE_URI
+#         fromDatabase:
+#           name: postgres
+#           property: connectionString
+#       - key: REDIS_URI
+#         fromService:
+#           name: redis
+#           type: redis
+#           property: connectionString
+#       - key: REDIS_DB
+#         value: "0"
+
+#   - type: redis
+#     name: redis
+#     plan: standard
+#     ipAllowList:
+#       - source: 0.0.0.0/0
+#         description: "Allow all IPs"
+
+# databases:
+#   - name: postgres
+#     databaseName: postgres
+#     user: postgres
+#     plan: standard
+#     region: oregon
+#     postgresMajorVersion: "16"
+#     ipAllowList:
+#       - source: 0.0.0.0/0
+#         description: "Allow all IPs"
