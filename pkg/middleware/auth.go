@@ -17,6 +17,7 @@ func JWTRefresh() gin.HandlerFunc {
 }
 
 func JWT(tokenType string) gin.HandlerFunc {
+	print("Authorization:- ", tokenType)
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 		if token == "" {
