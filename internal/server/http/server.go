@@ -49,6 +49,12 @@ func (s Server) Run() error {
 		log.Fatalf("MapRoutes Error: %v", err)
 	}
 	s.engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Handle 404 errors
+	s.engine.NoRoute(func(c *gin.Context) {
+		// Set the status code to 404
+		// c.JSON(http.StatusNotFound, gin.H{"message": "Page not found"})
+		c.File("./templates/404.html")
+	})
 	s.engine.GET("/health", func(c *gin.Context) {
 		response.JSON(c, http.StatusOK, nil)
 		return
