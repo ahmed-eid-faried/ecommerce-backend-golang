@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"os"
+	"time"
+
 	"github.com/quangdangfit/gocommon/logger"
 	"github.com/quangdangfit/gocommon/validation"
 
@@ -33,11 +37,29 @@ import (
 func main() {
 	cfg := config.LoadConfig()
 	logger.Initialize(cfg.Environment)
+	//*********************************************
 
-	db, err := dbs.NewDatabase(cfg.DatabaseURI)
+	// db, err := dbs.NewDatabase(cfg.DatabaseURI)
+	// if err != nil {
+	// 	logger.Fatal("Cannot connect to database", err)
+	// }
+
+	// *********************************************
+	var db *dbs.Database
+	var err error
+	for i := 0; i < 10; i++ { // retry up to 10 times
+		db, err = dbs.NewDatabase(cfg.DatabaseURI)
+		if err == nil {
+			break
+		}
+		log.Printf("Failed to connect to database. Retrying in 5 seconds... (%d/10)\n", i+1)
+		time.Sleep(5 * time.Second)
+	}
 	if err != nil {
 		logger.Fatal("Cannot connect to database", err)
+		os.Exit(1)
 	}
+	//*********************************************
 
 	err = db.AutoMigrate(&userModel.User{}, &productModel.Product{}, orderModel.Order{}, orderModel.OrderLine{})
 	if err != nil {
@@ -63,4 +85,5 @@ func main() {
 	if err = grpcSvr.Run(); err != nil {
 		logger.Fatal(err)
 	}
+
 }
